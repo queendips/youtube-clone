@@ -67,11 +67,20 @@ pipeline {
             }
         }
 
+       
+
         stage('TRIVY Image Scan') {
             steps {
                 sh 'trivy image 2swapna/youtube-clone:latest > trivyimage.txt'
             }
         }
+
+        stage('Cleanup Local Docker Images') {
+            steps {
+                sh "docker rmi 2swapna/youtube-clone:latest || true"
+                // sh "docker rmi ${IMAGE_NAME}:latest || true"
+            }
+        }         
 
         // Uncomment and configure this block when deploying to Kubernetes
 
@@ -101,6 +110,7 @@ pipeline {
     //     }
     // }
 }
+
 
 
 
